@@ -23,5 +23,11 @@
     <Image Include="resources\lebeaugosse.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="resources\disparity-01-left.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="resources\disparity-01-right.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

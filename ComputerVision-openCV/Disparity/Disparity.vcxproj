@@ -148,6 +148,8 @@
     <ClCompile Include="Disparity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\disparity-01-left.jpg" />
+    <Image Include="resources\disparity-01-right.jpg" />
     <Image Include="resources\lebeaugosse.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

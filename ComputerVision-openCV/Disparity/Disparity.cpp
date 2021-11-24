@@ -10,25 +10,33 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	// Read the image file
-	Mat image = imread("./resources/lebeaugosse.png");
+	// Chargement des images
+	Mat lImage = imread("./resources/disparity-01-left.jpg");
+	Mat rImage = imread("./resources/disparity-01-right.jpg");
 
-	if (image.empty()) // Check for failure
+	if (lImage.empty() || rImage.empty()) // On test si nos deux images ont bien été trouvées et lue correctement
 	{
 		cout << "Could not open or find the image" << endl;
-		system("pause"); //wait for any key press
+		system("pause");
 		return -1;
 	}
 
-	String windowName = "My HelloWorld Window"; //Name of the window
 
-	namedWindow(windowName); // Create a window
+	//Affichage des images
+	String LeftImageWindowName = "Left image";
+	namedWindow(LeftImageWindowName); 
+	imshow(LeftImageWindowName, lImage); 
 
-	imshow(windowName, image); // Show our image inside the created window.
+	String RightImageWindowName = "Right image";
+	namedWindow(RightImageWindowName); 
+	imshow(RightImageWindowName, rImage); 
 
-	waitKey(0); // Wait for any keystroke in the window
 
-	destroyWindow(windowName); //destroy the created window
+	waitKey(0);
+
+	//Fin du programme
+	destroyWindow(LeftImageWindowName);
+	destroyWindow(RightImageWindowName);
 
 	return 0;
 }
