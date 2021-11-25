@@ -15,8 +15,8 @@ int main(int argc, char** argv)
 
 	
 	// Chargement des images
-	Mat lImage = imread("./resources/disparity-02-left.png", 1);
-	Mat rImage = imread("./resources/disparity-02-right.png", 1);
+	Mat lImage = imread("./resources/disparity-01-left.png", 1);
+	Mat rImage = imread("./resources/disparity-01-right.png", 1);
 
 	if (lImage.empty() || rImage.empty()) // On test si nos deux images ont bien été trouvées et lue correctement
 	{
@@ -25,19 +25,27 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
+	//on cherche les points en commun
 	std::vector<cv::Point2f> pointsInLeftImage;
 	std::vector<cv::Point2f> pointsInRightImage;
 	CVengine.findMatchings(&lImage, &rImage, &pointsInLeftImage, &pointsInRightImage);
+
+	//on affiche ces points
 	CVengine.displayMatchings(&lImage, &rImage, &pointsInLeftImage, &pointsInRightImage,true);
 
-	//Affichage des images
-	String LeftImageWindowName = "Left image";
-	namedWindow(LeftImageWindowName); 
-	imshow(LeftImageWindowName, lImage); 
+	//A l'aide de ces points on corrige la perspective de ces images
+	Mat rectifiedA;
+	Mat rectifiedB;
+	CVengine.rectify(&lImage, &rImage, &pointsInLeftImage, &pointsInRightImage, &rectifiedA, &rectifiedB);
 
-	String RightImageWindowName = "Right image";
+	//Affichage des images
+	String LeftImageWindowName = "Rectified left image";
+	namedWindow(LeftImageWindowName); 
+	imshow(LeftImageWindowName, rectifiedA);
+
+	String RightImageWindowName = "Rectified right image";
 	namedWindow(RightImageWindowName); 
-	imshow(RightImageWindowName, rImage); 
+	imshow(RightImageWindowName, rectifiedB);
 
 
 	waitKey(0);

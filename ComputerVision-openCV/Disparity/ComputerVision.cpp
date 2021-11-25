@@ -12,7 +12,7 @@ void ComputerVision::findMatchings(cv::Mat* iA, cv::Mat* iB, std::vector<cv::Poi
 	cv::Mat imageRight;
 	cv::cvtColor(*iA, imageLeft, cv::COLOR_BGR2GRAY);
 	cv::cvtColor(*iB, imageRight, cv::COLOR_BGR2GRAY);
-	cv::goodFeaturesToTrack(imageLeft, tempPA, 10, 0.05, 10);
+	cv::goodFeaturesToTrack(imageLeft, tempPA, 3000, 0.05, 25);
 	std::vector<uchar> status;
 	std::vector<float> err;
 	cv::calcOpticalFlowPyrLK(imageLeft, imageRight, tempPA, tempPB,status, err);
@@ -30,7 +30,6 @@ void ComputerVision::findMatchings(cv::Mat* iA, cv::Mat* iB, std::vector<cv::Poi
 void ComputerVision::displayMatchings(cv::Mat* iA, cv::Mat* iB, std::vector<cv::Point2f>* pA, std::vector<cv::Point2f>* pB, bool compare) const
 {
 	cv::Mat result;
-
 	if (compare) {//Mode de comparaison
 		cv::hconcat(*iA, *iB, result);
 		std::vector<cv::Point2f> temppB;
@@ -47,6 +46,16 @@ void ComputerVision::displayMatchings(cv::Mat* iA, cv::Mat* iB, std::vector<cv::
 	std::string disparityLines = "Disparity lines";
 	cv::namedWindow(disparityLines);
 	cv::imshow(disparityLines, result);
+}
+
+void ComputerVision::rectify(cv::Mat* iA, cv::Mat* iB, std::vector<cv::Point2f>* pA, std::vector<cv::Point2f>* pB, cv::Mat* outA, cv::Mat* outB) const
+{
+	cv::Mat fundamentalMatrix = cv::findFundamentalMat(*pA, *pB);//calcul de la matrice fondamentale
+	cv::Mat h1;
+	cv::Mat h2;
+	cv::stereoRectifyUncalibrated(*pA, *pB, fundamentalMatrix, iA->size(), h1, h2);//calcul des matrices de rectification
+	cv::warpPerspective(*iA, *outA, h1, iA->size());
+	cv::warpPerspective(*iB, *outB, h2, iB->size());
 }
 
 void ComputerVision::drawlines(cv::Mat* image, std::vector<cv::Point2f>* const pA, std::vector<cv::Point2f>* const pB) const
