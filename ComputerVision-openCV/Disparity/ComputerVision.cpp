@@ -1,6 +1,6 @@
 #include "ComputerVision.h"
 
-ComputerVision::ComputerVision()
+ComputerVision::ComputerVision() : lineColor(255,0,0)
 {
 }
 
@@ -31,24 +31,27 @@ void ComputerVision::displayMatchings(cv::Mat* iA, cv::Mat* iB, std::vector<cv::
 {
 	cv::Mat result;
 
-	if (compare) {
+	if (compare) {//Mode de comparaison
 		cv::hconcat(*iA, *iB, result);
 		std::vector<cv::Point2f> temppB;
 		int iAWidth = iA->cols;
 		for (int i = 0; i < pB->size(); ++i) {
 			temppB.push_back(cv::Point2f((*pB)[i].x + iAWidth, (*pB)[i].y));
 		}
-		for (int i = 0; i < pA->size(); ++i) {
-			cv::line(result, (*pA)[i], temppB[i], cv::Scalar(255, 0, 255), 1);
-		}
-	}else {
+		drawlines(&result, pA, &temppB);//tracage des lignes
+	}else {//Mode de supperposition sur l'image d'origine
 		iA->copyTo(result);
-		for (int i = 0; i < pA->size(); ++i) {
-			cv::line(result, (*pA)[i], (*pB)[i], cv::Scalar(255, 0, 255), 1);
-		}
+		drawlines(&result, pA, pB);//tracage des lignes
 	}
 
 	std::string disparityLines = "Disparity lines";
 	cv::namedWindow(disparityLines);
 	cv::imshow(disparityLines, result);
+}
+
+void ComputerVision::drawlines(cv::Mat* image, std::vector<cv::Point2f>* const pA, std::vector<cv::Point2f>* const pB) const
+{
+	for (int i = 0; i < pA->size(); ++i) {
+		cv::line(*image, (*pA)[i], (*pB)[i], lineColor, 1);
+	}
 }
