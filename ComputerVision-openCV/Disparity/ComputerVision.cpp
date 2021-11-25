@@ -1,5 +1,7 @@
 #include "ComputerVision.h"
 
+using namespace cv;
+
 ComputerVision::ComputerVision() : lineColor(255,0,0)
 {
 }
@@ -56,6 +58,32 @@ void ComputerVision::rectify(cv::Mat* iA, cv::Mat* iB, std::vector<cv::Point2f>*
 	cv::stereoRectifyUncalibrated(*pA, *pB, fundamentalMatrix, iA->size(), h1, h2);//calcul des matrices de rectification
 	cv::warpPerspective(*iA, *outA, h1, iA->size());
 	cv::warpPerspective(*iB, *outB, h2, iB->size());
+}
+
+void ComputerVision::computeDisparity(cv::Mat* iA, cv::Mat* iB, cv::Mat* output)
+{
+	cv::Ptr<cv::StereoBM> sbm = cv::StereoBM::create();
+	cv::Mat disparity;
+
+	cv::Mat gsIa;
+	cv::Mat gsIb;
+	cv::cvtColor(*iA, gsIa, cv::COLOR_BGR2GRAY);
+	cv::cvtColor(*iB, gsIb, cv::COLOR_BGR2GRAY);
+
+	sbm->compute(gsIa, gsIb, disparity);
+
+	//on calcule les values min et max de la carte de disparité
+	double minVal;
+	double maxVal;
+	cv::minMaxLoc(disparity, &minVal, &maxVal);
+	double coeff = 255.0 / (maxVal*0.001 - minVal);
+	double offset = -minVal*255.0 / (maxVal * 0.001 - minVal);
+	cv::Mat finalDisparity(disparity.size(),CV_8U);
+	finalDisparity = offset + (disparity * coeff);
+
+	String disparityImageWindowName = "Disparity";
+	namedWindow(disparityImageWindowName);
+	imshow(disparityImageWindowName, finalDisparity);
 }
 
 void ComputerVision::drawlines(cv::Mat* image, std::vector<cv::Point2f>* const pA, std::vector<cv::Point2f>* const pB) const

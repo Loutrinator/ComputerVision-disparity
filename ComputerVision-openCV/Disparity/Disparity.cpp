@@ -38,6 +38,10 @@ int main(int argc, char** argv)
 	Mat rectifiedB;
 	CVengine.rectify(&lImage, &rImage, &pointsInLeftImage, &pointsInRightImage, &rectifiedA, &rectifiedB);
 
+	//Calcul de la disparité
+	Mat disparity;
+	CVengine.computeDisparity(&rectifiedA, &rectifiedB, &disparity);
+
 	//Affichage des images
 	String LeftImageWindowName = "Rectified left image";
 	namedWindow(LeftImageWindowName); 
