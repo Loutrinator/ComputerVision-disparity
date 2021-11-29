@@ -59,7 +59,10 @@ int main(int argc, char** argv)
 			video.read(currentFrame);
 			cv::Mat bwFrame;
 			cv::cvtColor(currentFrame, bwFrame, cv::COLOR_BGR2GRAY);
-			pointsWereFound = CVengine.trackPoints(&bwFrame, 100);
+			if (CVengine.roi.area() >= 10) {
+				pointsWereFound = CVengine.trackPoints(&bwFrame, 100);
+			}
+
 		}
 		CVengine.drawFrame(&currentFrame, windowName, pointsWereFound);
 
