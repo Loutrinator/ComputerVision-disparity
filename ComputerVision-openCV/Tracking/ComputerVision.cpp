@@ -24,7 +24,7 @@ void ComputerVision::drawFrame(cv::Mat* inputFrame, bool showPoints)
 
 void ComputerVision::detectPoints(cv::Mat* frame)
 {
-	cv::goodFeaturesToTrack(*frame, nextPoints, 3000, 0.05, 5);
+	cv::goodFeaturesToTrack(*frame, nextPoints, 3000, 0.05, 10);
 }
 
 std::vector<cv::Point2f> purgePoints(std::vector<cv::Point2f>& points, std::vector<uchar>& status) {
@@ -37,7 +37,7 @@ std::vector<cv::Point2f> purgePoints(std::vector<cv::Point2f>& points, std::vect
 
 bool ComputerVision::trackPoints(cv::Mat* frame, int requiredNbPoints)
 {
-	bool pointsFound;
+	bool pointsFound = false;
 	if (!prevInput.empty()) {
 		prevPoints = nextPoints; //je stoque les précédents points
 		if (prevPoints.size() < requiredNbPoints) {//je n'ai pas assez de points à tracker
@@ -48,10 +48,11 @@ bool ComputerVision::trackPoints(cv::Mat* frame, int requiredNbPoints)
 		std::vector<uchar> status;
 		std::vector<float> err;
 		cv::calcOpticalFlowPyrLK(prevInput, *frame, prevPoints, nextPoints, status, err);
+		prevPoints = purgePoints(prevPoints, status);
 		nextPoints = purgePoints(nextPoints, status);
 		//on retire les points qui ne sont pas trackés
 	}
 	prevInput = (*frame).clone();//on copie la frame actuelle dans prevInput pour en garder une référence
-	prevPoints = nextPoints;
+	//prevPoints = nextPoints;
 	return pointsFound;
 }
