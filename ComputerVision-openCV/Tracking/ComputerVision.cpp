@@ -43,23 +43,28 @@ bool ComputerVision::trackPoints(cv::Mat* frame, int requiredNbPoints)
 {
 	//if (currentPoint.x >= roi.tl().x && currentPoint.x <= roi.br().x && currentPoint.y <= roi.tl().y && currentPoint.y >= roi.br().y) {
 	bool pointsFound = false;
-	cv::Mat mask = cv::Mat::zeros(frame->size(), CV_8U);
-	cv::rectangle(mask, roi.br(), roi.tl(), cv::Scalar(255, 255, 255), -1);
-	imshow("mask", mask);
-
-	cv::Mat maskedImage;
-	cv::multiply(*frame, mask, maskedImage);
 
 	if (!prevInput.empty()) {
+
+		cv::Mat mask = cv::Mat::zeros(frame->size(), CV_8U);
+		cv::rectangle(mask, roi.br(), roi.tl(), cv::Scalar(255, 255, 255), -1);
+		imshow("mask", mask);
+
+		cv::Mat maskedPrevious;
+		cv::bitwise_and(prevInput, mask, maskedPrevious);
+		imshow("masked previous", maskedPrevious);
+		cv::Mat maskedNext;
+		cv::bitwise_and(*frame, mask, maskedNext);
+
 		prevPoints = nextPoints; //je stoque les précédents points
 		if (prevPoints.size() < requiredNbPoints) {//je n'ai pas assez de points à tracker
-			detectPoints(&prevInput); //je calcul les nouveaux points
+			detectPoints(&maskedPrevious); //je calcul les nouveaux points
 			if (prevPoints.size() < requiredNbPoints) return false; //on n'a toujours pas assez de points. On quitte la fonction
 		}
 		pointsFound = true; // on a trouvé des points (dit à drawFrame de tracer des points sur l'image)
 		std::vector<uchar> status;
 		std::vector<float> err;
-		cv::calcOpticalFlowPyrLK(prevInput, maskedImage, prevPoints, nextPoints, status, err);
+		cv::calcOpticalFlowPyrLK(maskedPrevious, maskedNext, prevPoints, nextPoints, status, err);
 		prevPoints = purgePoints(prevPoints, status);
 		nextPoints = purgePoints(nextPoints, status);
 		//on retire les points qui ne sont pas trackés
@@ -67,6 +72,10 @@ bool ComputerVision::trackPoints(cv::Mat* frame, int requiredNbPoints)
 	prevInput = (*frame).clone();//on copie la frame actuelle dans prevInput pour en garder une référence
 	//prevPoints = nextPoints;
 	return pointsFound;
+}
+
+void ComputerVision::updateROI()
+{
 }
 
 

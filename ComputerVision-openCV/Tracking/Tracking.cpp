@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 	setMouseCallback(windowName, mouseCallback, NULL);
 
 	// Chargement des images
-	VideoCapture video("./resources/tracking_2.mp4");
+	VideoCapture video("./resources/tracking_3.mp4");
 
 	if (!video.isOpened()) // On test si notre vidéo est lue correctement
 	{
@@ -51,16 +51,16 @@ int main(int argc, char** argv)
 	}
 
 	Mat currentFrame;
-
-	while (true) {
+	bool endReached = false;
+	while (!endReached) {
 
 		bool pointsWereFound = false;
 		if (CVengine.start.x < 0) {
-			video.read(currentFrame);
+			if (!video.read(currentFrame))endReached = true;
 			cv::Mat bwFrame;
 			cv::cvtColor(currentFrame, bwFrame, cv::COLOR_BGR2GRAY);
-			if (CVengine.roi.area() >= 10) {
-				pointsWereFound = CVengine.trackPoints(&bwFrame, 100);
+			if (CVengine.roi.area() >= 3) {
+				pointsWereFound = CVengine.trackPoints(&bwFrame, 3);
 			}
 
 		}
