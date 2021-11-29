@@ -71,15 +71,15 @@ void ComputerVision::computeDisparity(cv::Mat* iA, cv::Mat* iB, cv::Mat* output)
 	cv::cvtColor(*iB, gsIb, cv::COLOR_BGR2GRAY);
 
 	sbm->compute(gsIa, gsIb, disparity);
-
 	//on calcule les values min et max de la carte de disparité
 	double minVal;
 	double maxVal;
 	cv::minMaxLoc(disparity, &minVal, &maxVal);
-	double coeff = 255.0 / (maxVal*0.001 - minVal);
-	double offset = -minVal*255.0 / (maxVal * 0.001 - minVal);
+	double coeff = 255.0 / (maxVal - minVal);
+	double offset = -minVal*255.0 / (maxVal - minVal);
 	cv::Mat finalDisparity(disparity.size(),CV_8U);
 	finalDisparity = offset + (disparity * coeff);
+	finalDisparity.convertTo(finalDisparity, CV_8U);
 
 	String disparityImageWindowName = "Disparity";
 	namedWindow(disparityImageWindowName);
