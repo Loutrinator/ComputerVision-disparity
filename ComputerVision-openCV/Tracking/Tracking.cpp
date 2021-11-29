@@ -15,7 +15,7 @@ int main(int argc, char** argv)
 
 
 	// Chargement des images
-	VideoCapture video("./resources/tracking_1.mp4");
+	VideoCapture video("./resources/tracking_3.mp4");
 
 	if (!video.isOpened()) // On test si notre vidéo est lue correctement
 	{
