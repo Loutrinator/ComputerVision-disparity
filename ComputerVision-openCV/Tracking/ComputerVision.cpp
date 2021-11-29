@@ -2,11 +2,11 @@
 
 using namespace cv;
 
-ComputerVision::ComputerVision() : lineColor(0,0,255), pointColor(0,255,255)
+ComputerVision::ComputerVision() : lineColor(0,0,255), pointColor(0, 255, 255), roiColor(0, 255, 0), start(-1, -1)
 {
 }
 
-void ComputerVision::drawFrame(cv::Mat* inputFrame, bool showPoints)
+void ComputerVision::drawFrame(cv::Mat* inputFrame, std::string windowName, bool showPoints)
 {
 	cv::Mat frame;
 	frame = inputFrame->clone();
@@ -18,7 +18,8 @@ void ComputerVision::drawFrame(cv::Mat* inputFrame, bool showPoints)
 			cv::line(frame, currentPosition, prevPosition, lineColor, 1);
 		}
 	}
-	imshow("Video", frame);
+	cv::rectangle(frame, roi.tl(), roi.br(), roiColor, 2);
+	imshow(windowName, frame);
 
 }
 
@@ -56,3 +57,5 @@ bool ComputerVision::trackPoints(cv::Mat* frame, int requiredNbPoints)
 	//prevPoints = nextPoints;
 	return pointsFound;
 }
+
+

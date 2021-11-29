@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ComputerVision.h" />
+    <ClInclude Include="Tracking.h" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="resources\tracking_1.mp4" />

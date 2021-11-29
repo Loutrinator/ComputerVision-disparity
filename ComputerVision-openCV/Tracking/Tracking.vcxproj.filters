@@ -26,6 +26,9 @@
     <ClInclude Include="ComputerVision.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tracking.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Media Include="resources\tracking_1.mp4" />
