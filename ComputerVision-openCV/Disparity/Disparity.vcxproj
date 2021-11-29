@@ -145,10 +145,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ComputerVision.cpp" />
     <ClCompile Include="Disparity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="resources\disparity-01-left.jpg" />
+    <Image Include="resources\disparity-01-right.jpg" />
+    <Image Include="resources\disparity-02-left.png" />
+    <Image Include="resources\disparity-02-right.png" />
     <Image Include="resources\lebeaugosse.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ComputerVision.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

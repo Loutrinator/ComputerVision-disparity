@@ -1,6 +1,7 @@
 // Disparity.cpp : This file contains the 'main' function. Program execution begins and ends there.
 //
 #include <opencv2/opencv.hpp>
+#include "ComputerVision.h"
 
 #include <iostream>
 #include <string>
@@ -10,25 +11,52 @@ using namespace std;
 
 int main(int argc, char** argv)
 {
-	// Read the image file
-	Mat image = imread("./resources/lebeaugosse.png");
+	ComputerVision CVengine;
 
-	if (image.empty()) // Check for failure
+	
+	// Chargement des images
+	Mat lImage = imread("./resources/disparity-01-left.png", 1);
+	Mat rImage = imread("./resources/disparity-01-right.png", 1);
+
+	if (lImage.empty() || rImage.empty()) // On test si nos deux images ont bien été trouvées et lue correctement
 	{
 		cout << "Could not open or find the image" << endl;
-		system("pause"); //wait for any key press
+		system("pause");
 		return -1;
 	}
 
-	String windowName = "My HelloWorld Window"; //Name of the window
+	//on cherche les points en commun
+	std::vector<cv::Point2f> pointsInLeftImage;
+	std::vector<cv::Point2f> pointsInRightImage;
+	CVengine.findMatchings(&lImage, &rImage, &pointsInLeftImage, &pointsInRightImage);
 
-	namedWindow(windowName); // Create a window
+	//on affiche ces points
+	CVengine.displayMatchings(&lImage, &rImage, &pointsInLeftImage, &pointsInRightImage,true);
 
-	imshow(windowName, image); // Show our image inside the created window.
+	//A l'aide de ces points on corrige la perspective de ces images
+	Mat rectifiedA;
+	Mat rectifiedB;
+	CVengine.rectify(&lImage, &rImage, &pointsInLeftImage, &pointsInRightImage, &rectifiedA, &rectifiedB);
 
-	waitKey(0); // Wait for any keystroke in the window
+	//Calcul de la disparité
+	Mat disparity;
+	CVengine.computeDisparity(&rectifiedA, &rectifiedB, &disparity);
 
-	destroyWindow(windowName); //destroy the created window
+	//Affichage des images
+	String LeftImageWindowName = "Rectified left image";
+	namedWindow(LeftImageWindowName); 
+	imshow(LeftImageWindowName, rectifiedA);
+
+	String RightImageWindowName = "Rectified right image";
+	namedWindow(RightImageWindowName); 
+	imshow(RightImageWindowName, rectifiedB);
+
+
+	waitKey(0);
+
+	//Fin du programme
+	destroyWindow(LeftImageWindowName);
+	destroyWindow(RightImageWindowName);
 
 	return 0;
 }
