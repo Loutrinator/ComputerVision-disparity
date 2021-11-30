@@ -76,6 +76,20 @@ bool ComputerVision::trackPoints(cv::Mat* frame, int requiredNbPoints)
 
 void ComputerVision::updateROI()
 {
+	if (roi.empty()) return;
+	int minX = INT_MAX;
+	int maxX = INT_MIN;
+	int minY = INT_MAX;
+	int maxY = INT_MIN;
+
+	for (int i = 0; i < nextPoints.size(); ++i) {
+		Point2f p = nextPoints[i];
+		if (minX > p.x) minX = p.x;
+		if (maxX < p.x) maxX = p.x;
+		if (minY > p.y) minY = p.y;
+		if (maxY < p.y) maxY = p.y;
+	}
+	roi = Rect(Point2f(minX, minY), Point2f(maxX, maxY));
 }
 
 
