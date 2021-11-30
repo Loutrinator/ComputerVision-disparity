@@ -25,7 +25,7 @@ void ComputerVision::drawFrame(cv::Mat* inputFrame, std::string windowName, bool
 
 void ComputerVision::detectPoints(cv::Mat* frame)
 {
-	cv::goodFeaturesToTrack(*frame, nextPoints, 3000, 0.05, 10);
+	cv::goodFeaturesToTrack(*frame, prevPoints, 100, 0.05, 10);
 }
 
 std::vector<cv::Point2f> ComputerVision::purgePoints(std::vector<cv::Point2f>& points, std::vector<uchar>& status) {
@@ -48,13 +48,21 @@ bool ComputerVision::trackPoints(cv::Mat* frame, int requiredNbPoints)
 
 		cv::Mat mask = cv::Mat::zeros(frame->size(), CV_8U);
 		cv::rectangle(mask, roi.br(), roi.tl(), cv::Scalar(255, 255, 255), -1);
-		imshow("mask", mask);
+		cv::Mat widerMask = cv::Mat::zeros(frame->size(), CV_8U);
+		int offset = 0;
+		Point2f minXY(roi.tl().x - offset, roi.br().y + offset);
+		Point2f maxXY(roi.br().x + offset, roi.tl().y - offset);
+		cv::rectangle(widerMask, minXY, maxXY, cv::Scalar(255, 255, 255), -1);
+		//je show les deux masks les uns sur les autres
+		cv::Mat showMasks = mask.clone(); 
+		cv::rectangle(showMasks, minXY, maxXY, cv::Scalar(0, 0, 255), 1);
+		imshow("mask", showMasks);
 
 		cv::Mat maskedPrevious;
 		cv::bitwise_and(prevInput, mask, maskedPrevious);
 		imshow("masked previous", maskedPrevious);
 		cv::Mat maskedNext;
-		cv::bitwise_and(*frame, mask, maskedNext);
+		cv::bitwise_and(*frame, widerMask, maskedNext);
 
 		prevPoints = nextPoints; //je stoque les précédents points
 		if (prevPoints.size() < requiredNbPoints) {//je n'ai pas assez de points à tracker

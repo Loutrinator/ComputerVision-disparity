@@ -51,22 +51,16 @@ int main(int argc, char** argv)
 	}
 
 	Mat currentFrame;
-	bool endReached = false;
-	while (!endReached) {
-
+	while (true) {
 		bool pointsWereFound = false;
 		if (CVengine.start.x < 0) {
-			if (!video.read(currentFrame))endReached = true;
+			if (!video.read(currentFrame))break;
 			cv::Mat bwFrame;
 			cv::cvtColor(currentFrame, bwFrame, cv::COLOR_BGR2GRAY);
-			if (CVengine.roi.area() >= 3) {
-				pointsWereFound = CVengine.trackPoints(&bwFrame, 3);
-				CVengine.updateROI();
-			}
-
+			pointsWereFound = CVengine.trackPoints(&bwFrame, 3);
+			CVengine.updateROI();
 		}
 		CVengine.drawFrame(&currentFrame, windowName, pointsWereFound);
-
 		if (cv::waitKey(16) == 27) {
 			break;
 		}
