@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.30907.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Disparity", "Disparity\Disparity.vcxproj", "{BAE66C51-626E-4A26-90FC-BA562A500275}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tracking", "Tracking\Tracking.vcxproj", "{9CA1F746-EF11-43AF-A523-345BB10D8185}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -21,6 +23,14 @@ Global
 		{BAE66C51-626E-4A26-90FC-BA562A500275}.Release|x64.Build.0 = Release|x64
 		{BAE66C51-626E-4A26-90FC-BA562A500275}.Release|x86.ActiveCfg = Release|Win32
 		{BAE66C51-626E-4A26-90FC-BA562A500275}.Release|x86.Build.0 = Release|Win32
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Debug|x64.ActiveCfg = Debug|x64
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Debug|x64.Build.0 = Debug|x64
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Debug|x86.ActiveCfg = Debug|Win32
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Debug|x86.Build.0 = Debug|Win32
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Release|x64.ActiveCfg = Release|x64
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Release|x64.Build.0 = Release|x64
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Release|x86.ActiveCfg = Release|Win32
+		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
