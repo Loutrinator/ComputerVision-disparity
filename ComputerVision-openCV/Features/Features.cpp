@@ -12,55 +12,29 @@ using namespace std;
 
 ComputerVision CVengine;
 
-void mouseCallback(int event, int x, int y, int flags, void* userdata)
-{
-	if (event == cv::EVENT_LBUTTONDOWN)
-	{
-		CVengine.start = cv::Point(x, y);
-		CVengine.roi = cv::Rect();
-		CVengine.prevPoints.clear();
-		CVengine.nextPoints.clear();
-	}
-	else if (event == cv::EVENT_MOUSEMOVE)
-	{
-		if (CVengine.start.x >= 0) {
-			cv::Point end(x, y);
-			CVengine.roi = cv::Rect(CVengine.start, end);
-		}
-	}
-	else if (event == cv::EVENT_LBUTTONUP) {
-		cv::Point end(x, y);
-		CVengine.roi = cv::Rect(CVengine.start, end);
-		CVengine.start = cv::Point(-1, -1);
-	}
-}
 int main(int argc, char** argv)
 {
 	std::string windowName = "Video";
 	cv::namedWindow(windowName);
-	setMouseCallback(windowName, mouseCallback, NULL);
 
 	// Chargement des images
-	VideoCapture video("./resources/tracking_2.mp4");
+	VideoCapture video("./resources/set1/video.mp4");
+	Mat imageToTrack = imread("./resources/set1/naruto.jpg", 1);
 
-	if (!video.isOpened()) // On test si notre vidéo est lue correctement
+	if (!video.isOpened() && !imageToTrack.empty()) // On test si notre vidéo est lue correctement
 	{
 		cout << "Could not open or find the image" << endl;
 		system("pause");
 		return -1;
 	}
 
+	cv::Ptr<cv::ORB> orb = ORB::create();
 	Mat currentFrame;
+
 	while (true) {
-		bool pointsWereFound = false;
-		if (CVengine.start.x < 0) {
-			if (!video.read(currentFrame))break;
-			cv::Mat bwFrame;
-			cv::cvtColor(currentFrame, bwFrame, cv::COLOR_BGR2GRAY);
-			pointsWereFound = CVengine.trackPoints(&bwFrame, 3);
-			CVengine.updateROI();
-		}
-		CVengine.drawFrame(&currentFrame, windowName, pointsWereFound);
+		if (!video.read(currentFrame))break;
+		CVengine.detectComputePoints(orb, &currentFrame, &imageToTrack);
+		CVengine.drawWindow(&currentFrame, &imageToTrack, windowName);
 		if (cv::waitKey(16) == 27) {
 			break;
 		}

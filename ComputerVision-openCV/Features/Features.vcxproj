@@ -153,9 +153,16 @@
     <ClInclude Include="Features.h" />
   </ItemGroup>
   <ItemGroup>
-    <Media Include="resources\tracking_1.mp4" />
-    <Media Include="resources\tracking_2.mp4" />
-    <Media Include="resources\tracking_3.mp4" />
+    <Image Include="resources\set1\bleach1.jpg" />
+    <Image Include="resources\set1\bleach2.png" />
+    <Image Include="resources\set1\deathnote.jpg" />
+    <Image Include="resources\set1\gantz.jpg" />
+    <Image Include="resources\set1\naruto-fliped.png" />
+    <Image Include="resources\set1\naruto.jpg" />
+    <Image Include="resources\set1\yakitate.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="resources\set1\video.mp4" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

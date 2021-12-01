@@ -5,19 +5,18 @@ class ComputerVision
 {
 public:
     ComputerVision();
-    void drawFrame(cv::Mat* inputFrame, std::string windowName, bool showPoints);
-    void detectPoints(cv::Mat* frame);
-    bool trackPoints(cv::Mat* frame, int requiredNbPoints);
-    void updateROI();
+    void drawWindow(cv::Mat* inputFrame, cv::Mat* targetFrame, std::string windowName);
+    void detectComputePoints(cv::Ptr<cv::ORB> orb, cv::Mat* video, cv::Mat* target);
     std::vector<cv::Point2f> purgePoints(std::vector<cv::Point2f>& points, std::vector<uchar>& status);
     cv::Scalar lineColor;
-    cv::Scalar pointColor;
+    cv::Scalar pointColor; 
     cv::Scalar roiColor;
-    std::vector<cv::Point2f> prevPoints;
-    std::vector<cv::Point2f> nextPoints;
-    cv::Mat prevInput;
-    cv::Rect roi;
-    cv::Point start;
+    std::vector<cv::KeyPoint> lKeyPts;
+    std::vector<cv::KeyPoint> rKeyPts;
+    std::vector<cv::DMatch>validFeatures;
+    cv::Mat leftDesc;
+    cv::Mat rightDesc;
+    float distanceValue;
 private:
 };
 
