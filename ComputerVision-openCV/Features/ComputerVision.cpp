@@ -31,9 +31,9 @@ void ComputerVision::drawWindow(cv::Mat* inputFrame, cv::Mat* targetFrame, std::
 
 	//std::vector<DMatch> good;
 	cv::Mat resultImage;
-	std::cout << "lKeyPts : " << lKeyPts.size() << " rKeyPts : " << rKeyPts.size() << std::endl;
-	std::cout << "targetFrame : " << (*targetFrame).size() << " inputFrame : " << (*inputFrame).size() << std::endl;
-	std::cout << "validFeatures : " << validFeatures.size() << std::endl;
+	//std::cout << "lKeyPts : " << lKeyPts.size() << " rKeyPts : " << rKeyPts.size() << std::endl;
+	//std::cout << "targetFrame : " << (*targetFrame).size() << " inputFrame : " << (*inputFrame).size() << std::endl;
+	//std::cout << "validFeatures : " << validFeatures.size() << std::endl;
 	cv::drawMatches(*targetFrame, lKeyPts, *inputFrame, rKeyPts, validFeatures, resultImage);
 	cv::imshow(windowName, resultImage);
 }
@@ -46,9 +46,11 @@ void ComputerVision::detectComputePoints(cv::Ptr<cv::ORB> orb, cv::Mat* video, c
 	orb->detect(*video, rKeyPts);
 	orb->compute(*video, rKeyPts, rightDesc);
 
-	cv::Ptr <cv::BFMatcher> bfmMatcher = cv::BFMatcher::create();
+	cv::Ptr<cv::BFMatcher> bfmMatcher = cv::BFMatcher::create();
 	std::vector<std::vector<cv::DMatch>> matrixOfMatches;
 	bfmMatcher->knnMatch(leftDesc, rightDesc, matrixOfMatches, 2);
+
+	validFeatures.clear();//IMPORTANT :'(
 
 	for (int i = 0; i < matrixOfMatches.size(); ++i) {
 		std::vector<cv::DMatch> match = matrixOfMatches[i];
@@ -56,5 +58,8 @@ void ComputerVision::detectComputePoints(cv::Ptr<cv::ORB> orb, cv::Mat* video, c
 			validFeatures.push_back(match[0]);
 		}
 	}
+	//cv::Mat resultImage;
+	//cv::drawMatches(*target, lKeyPts, *video, rKeyPts, validFeatures, resultImage);
+	//cv::imshow("test", resultImage);
 }
 

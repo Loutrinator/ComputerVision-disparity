@@ -12,7 +12,6 @@ using namespace std;
 
 ComputerVision CVengine;
 
-
 int main(int argc, char** argv)
 {
 	std::string windowName = "prout";
@@ -31,7 +30,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	cv::Ptr<cv::ORB> orb = ORB::create();//team classic shit
+	cv::Ptr<cv::ORB> orb = ORB::create(1000);//team classic shit
 
 	Mat currentFrame;
 
