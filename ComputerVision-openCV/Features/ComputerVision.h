@@ -7,6 +7,7 @@ public:
     ComputerVision();
     void drawWindow(cv::Mat* inputFrame, cv::Mat* targetFrame, std::string windowName);
     void detectComputePoints(cv::Ptr<cv::ORB> orb, cv::Mat* video, cv::Mat* target);
+    void computeOutline(cv::Mat* video, cv::Mat* target);
     std::vector<cv::Point2f> purgePoints(std::vector<cv::Point2f>& points, std::vector<uchar>& status);
     cv::Scalar lineColor;
     cv::Scalar pointColor; 

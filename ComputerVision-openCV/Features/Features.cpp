@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 	VideoCapture video("./resources/set1/video.mp4");
 	Mat targetFile = imread("./resources/set1/naruto.jpg", 1);
 
-	if (!video.isOpened() && !targetFile.empty()) // On test si notre vidï¿½o est lue correctement
+	if (!video.isOpened() && !targetFile.empty()) // On test si notre vidéo est lue correctement
 	{
 		cout << "Could not open or find the image" << endl;
 		system("pause");
@@ -53,6 +53,8 @@ int main(int argc, char** argv)
 		}
 
 		CVengine.detectComputePoints(orb, &rFrame, &lFrame);
+		CVengine.computeOutline(&rFrame, &lFrame);
+
 		CVengine.drawWindow(&currentFrame, &targetFile, windowName);
 
 		if (cv::waitKey(16) == 27) {

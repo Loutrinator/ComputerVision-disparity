@@ -41,3 +41,7 @@ void ComputerVision::detectComputePoints(cv::Ptr<cv::ORB> orb, cv::Mat* video, c
 	}
 }
 
+void ComputerVision::computeOutline(cv::Mat* video, cv::Mat* target)
+{
+}
+
