@@ -19,11 +19,9 @@ int main(int argc, char** argv)
 
 	// Chargement des images
 	VideoCapture video("./resources/set1/video.mp4");
-	Mat targeFile = imread("./resources/set1/naruto.jpg", 1);
-	Mat imageToTrack;
-	cv::cvtColor(targeFile, imageToTrack, COLOR_BGR2GRAY);
+	Mat targetFile = imread("./resources/set1/naruto.jpg", 1);
 
-	if (!video.isOpened() && !imageToTrack.empty()) // On test si notre vidéo est lue correctement
+	if (!video.isOpened() && !targetFile.empty()) // On test si notre vidï¿½o est lue correctement
 	{
 		cout << "Could not open or find the image" << endl;
 		system("pause");
@@ -32,20 +30,31 @@ int main(int argc, char** argv)
 
 	cv::Ptr<cv::ORB> orb = ORB::create(1000);//team classic shit
 
-	Mat currentFrame;
 
+	cv::Mat lFrame;
+	cv::Mat rFrame;
+
+	if (BnWInputs) {
+		cv::cvtColor(targetFile, lFrame, COLOR_BGR2GRAY);
+	}
+	else {
+		lFrame = targetFile.clone();
+	}
+
+	Mat currentFrame;
 	while (true) {
 		if (!video.read(currentFrame))break;
 		Mat frame;
-		cv::cvtColor(currentFrame, frame, COLOR_BGR2GRAY);
 		if (BnWInputs) {
-			CVengine.detectComputePoints(orb, &frame, &imageToTrack);
-			CVengine.drawWindow(&frame, &imageToTrack, windowName);
+			cv::cvtColor(currentFrame, rFrame, COLOR_BGR2GRAY);
 		}
 		else {
-			CVengine.detectComputePoints(orb, &currentFrame, &targeFile);
-			CVengine.drawWindow(&currentFrame, &targeFile, windowName);
+			rFrame = currentFrame.clone();
 		}
+
+		CVengine.detectComputePoints(orb, &rFrame, &lFrame);
+		CVengine.drawWindow(&currentFrame, &targetFile, windowName);
+
 		if (cv::waitKey(16) == 27) {
 			break;
 		}

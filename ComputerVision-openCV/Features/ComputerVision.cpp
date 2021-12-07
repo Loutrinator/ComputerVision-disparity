@@ -11,25 +11,6 @@ void ComputerVision::drawWindow(cv::Mat* inputFrame, cv::Mat* targetFrame, std::
 	cv::Mat iFrame = inputFrame->clone();
 	cv::Mat tFrame = targetFrame->clone();
 
-	/*
-	std::vector<Point2f> lPoints;
-	cv::KeyPoint::convert(lKeyPts, lPoints);
-	std::vector<Point2f> rPoints;
-	cv::KeyPoint::convert(rKeyPts, rPoints);
-
-	for (int i = 0; i < lPoints.size(); ++i) {
-		cv::Point2f point = lPoints[i];
-		cv::circle(iFrame, point, 3, pointColor, 1);
-	}
-	for (int i = 0; i < rPoints.size(); ++i) {
-		cv::Point2f point = rPoints[i];
-		cv::circle(tFrame, point, 3, pointColor, 1);
-	}
-	cv::imshow(windowName, iFrame);
-	cv::imshow("object", tFrame);
-	*/
-
-	//std::vector<DMatch> good;
 	cv::Mat resultImage;
 	//std::cout << "lKeyPts : " << lKeyPts.size() << " rKeyPts : " << rKeyPts.size() << std::endl;
 	//std::cout << "targetFrame : " << (*targetFrame).size() << " inputFrame : " << (*inputFrame).size() << std::endl;
@@ -58,8 +39,5 @@ void ComputerVision::detectComputePoints(cv::Ptr<cv::ORB> orb, cv::Mat* video, c
 			validFeatures.push_back(match[0]);
 		}
 	}
-	//cv::Mat resultImage;
-	//cv::drawMatches(*target, lKeyPts, *video, rKeyPts, validFeatures, resultImage);
-	//cv::imshow("test", resultImage);
 }
 
