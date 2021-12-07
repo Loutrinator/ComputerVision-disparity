@@ -16,6 +16,8 @@ int main(int argc, char** argv)
 {
 	std::string windowName = "prout";
 	bool BnWInputs = true;
+	CVengine.distanceValue = 0.7;
+	CVengine.minPointsSize = 8;
 
 	// Chargement des images
 	VideoCapture video("./resources/set1/video.mp4");
@@ -41,6 +43,10 @@ int main(int argc, char** argv)
 		lFrame = targetFile.clone();
 	}
 
+
+	orb->detect(lFrame, CVengine.lKeyPts);
+	orb->compute(lFrame, CVengine.lKeyPts, CVengine.leftDesc);
+
 	Mat currentFrame;
 	while (true) {
 		if (!video.read(currentFrame))break;
@@ -53,7 +59,7 @@ int main(int argc, char** argv)
 		}
 
 		CVengine.detectComputePoints(orb, &rFrame, &lFrame);
-		CVengine.computeOutline(&rFrame, &lFrame);
+		CVengine.computeOutline(&lFrame);
 
 		CVengine.drawWindow(&currentFrame, &targetFile, windowName);
 
