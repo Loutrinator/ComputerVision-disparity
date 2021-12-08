@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Disparity", "Disparity\Disp
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tracking", "Tracking\Tracking.vcxproj", "{9CA1F746-EF11-43AF-A523-345BB10D8185}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Features", "Features\Features.vcxproj", "{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Release|x64.Build.0 = Release|x64
 		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Release|x86.ActiveCfg = Release|Win32
 		{9CA1F746-EF11-43AF-A523-345BB10D8185}.Release|x86.Build.0 = Release|Win32
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Debug|x64.ActiveCfg = Debug|x64
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Debug|x64.Build.0 = Debug|x64
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Debug|x86.ActiveCfg = Debug|Win32
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Debug|x86.Build.0 = Debug|Win32
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Release|x64.ActiveCfg = Release|x64
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Release|x64.Build.0 = Release|x64
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Release|x86.ActiveCfg = Release|Win32
+		{0F78779A-2017-4C2C-8D94-9D615D9C7CB9}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
