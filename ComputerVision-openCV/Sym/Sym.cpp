@@ -14,8 +14,9 @@ ComputerVision CVengine;
 
 int main(int argc, char** argv)
 {
-	std::string windowName = "Symmetry points";
 	std::string windowMatchesName = "Matches";
+	std::string windowBCName = "Barrycenters";
+	std::string windowHOUGHName = "HOUGH";
 	bool BnWInputs = true;
 	CVengine.distanceValue = 0.75;
 	CVengine.minPointsSize = 1;
@@ -44,7 +45,8 @@ int main(int argc, char** argv)
 	//CVengine.computeSymmetry(orb, &lFrame, Y_AXIS);
 
 	CVengine.drawMatchesSingleFrame(&lFrame, windowMatchesName);
-
+	CVengine.drawBarrycenters(&lFrame, windowBCName);
+	//CVengine.computeHough(&lFrame, windowHOUGHName);
 	cv::waitKey(0);
 	return 0;
 }
