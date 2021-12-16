@@ -22,7 +22,7 @@ int main(int argc, char** argv)
 	CVengine.minPointsSize = 1;
 
 	// Chargement des images
-	Mat image = imread("./resources/f.jpg", 1);
+	Mat image = imread("./resources/image2.jpg", 1);
 
 	if (image.empty()) // On test si notre vidéo est lue correctement
 	{
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 		return -1;
 	}
 
-	cv::Ptr<cv::ORB> orb = ORB::create(1500);//team classic shit
+	cv::Ptr<cv::ORB> orb = ORB::create(25000);//team classic shit
 
 	cv::Mat lFrame;
 
@@ -45,8 +45,9 @@ int main(int argc, char** argv)
 	//CVengine.computeSymmetry(orb, &lFrame, Y_AXIS);
 
 	CVengine.drawMatchesSingleFrame(&lFrame, windowMatchesName);
-	CVengine.drawBarrycenters(&lFrame, windowBCName);
-	//CVengine.computeHough(&lFrame, windowHOUGHName);
+
+	CVengine.computeBarrycentersImage(&lFrame, windowBCName);
+	CVengine.computeHough(&lFrame , windowHOUGHName);
 	cv::waitKey(0);
 	return 0;
 }

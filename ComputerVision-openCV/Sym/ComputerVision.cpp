@@ -43,13 +43,14 @@ void ComputerVision::drawMatchesSingleFrame(cv::Mat* frame, std::string windowNa
 	cv::imshow(windowName, resultImage);
 }
 
-void ComputerVision::drawBarrycenters(cv::Mat* frame, std::string windowName)
+void ComputerVision::computeBarrycentersImage(cv::Mat* frame, std::string windowName)
 {
-	cv::Mat bCenter = Mat::zeros(frame->size(),CV_8U);
+	cv::Mat bCenter = Mat::zeros(frame->size(),CV_8UC1);
 	for (int i = 0; i < xBarryCenters.size(); ++i) {
 		Point2f bc = xBarryCenters[i];
-		cv::circle(bCenter, bc, 2, Scalar(255, 255, 255));
+		cv::circle(bCenter, bc, 1, Scalar(255));
 	}
+	barrycenterImage = bCenter;
 	cv::imshow(windowName, bCenter);
 }
 
@@ -86,23 +87,22 @@ void ComputerVision::computeSymmetry(cv::Ptr<cv::ORB> orb, cv::Mat* img, Symmetr
 
 void ComputerVision::computeHough(cv::Mat* frame, std::string windowName)
 {
-	cv::Mat res;
-	std::vector<Vec2f> lines; // will hold the results of the detection
-	HoughLines(xBarryCenters, lines, 1, CV_PI / 180, 150, 0, 0); // runs the actual detection
+	cv::Mat res = frame->clone();
+	cv::cvtColor(res, res, COLOR_GRAY2BGR);
+	std::vector<cv::Vec2f> lines; // will hold the results of the detection
+	HoughLines(barrycenterImage, lines, 1, CV_PI / 180, 150, 0, 0); // runs the actual detection
 	// Draw the lines
-	for (size_t i = 0; i < lines.size(); i++)
-	{
-		float rho = lines[i][0], theta = lines[i][1];
-		Point pt1, pt2;
-		double a = cos(theta), b = sin(theta);
-		double x0 = a * rho, y0 = b * rho;
-		pt1.x = cvRound(x0 + 1000 * (-b));
-		pt1.y = cvRound(y0 + 1000 * (a));
-		pt2.x = cvRound(x0 - 1000 * (-b));
-		pt2.y = cvRound(y0 - 1000 * (a));
-		line(res, pt1, pt2, Scalar(0, 0, 255), 3, LINE_AA);
-	}
-	imshow(windowName, res);
+	float rho = lines[0][0];
+	float theta = lines[0][1];
+	Point pt1, pt2;
+	double a = cos(theta), b = sin(theta);
+	double x0 = a * rho, y0 = b * rho;
+	pt1.x = cvRound(x0 + 1000 * (-b));
+	pt1.y = cvRound(y0 + 1000 * (a));
+	pt2.x = cvRound(x0 - 1000 * (-b));
+	pt2.y = cvRound(y0 - 1000 * (a));
+	line(res, pt1, pt2, Scalar(0, 0, 255), 2, LINE_AA);
+	imshow("Symmetry axis", res);
 }
 
 
